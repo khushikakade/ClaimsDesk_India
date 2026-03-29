@@ -1,0 +1,12 @@
+{
+  "python.analysis.extraPaths": [
+    ".",
+    "./claimsdesk"
+  ],
+  "python.autoComplete.extraPaths": [
+    ".",
+    "./claimsdesk"
+  ],
+  "python.analysis.typeCheckingMode": "basic"
+}
+

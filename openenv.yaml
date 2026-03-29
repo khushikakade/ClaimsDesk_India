@@ -1,0 +1,34 @@
+# OpenEnv Benchmark Metadata: ClaimsDesk India
+name: claimsdesk
+version: "1.0.0-in"
+description: "Professional AI insurance claims intelligence environment localized for the Indian market (INR, ₹)."
+entry_point: "backend.app.env.env:ClaimsDeskEnv"
+
+# Reward Specification
+reward_range: [-1.0, 1.0]
+terminal_reward: true
+
+# Task Definitions (Diverse Domains)
+tasks:
+  - id: StraightThrough
+    name: "Standard Health Intake (Easy)"
+    description: "Triage a legitimate Mumbai-based health surgery claim with full documentation."
+    difficulty: easy
+  - id: MissingButLegit
+    name: "Delhi Property Evidence Gap (Medium)"
+    description: "Investigate a legitimate property fire claim in Delhi with missing fire reports."
+    difficulty: medium
+  - id: InflatedCollision
+    name: "Bengaluru Claim Inflation (Hard)"
+    description: "Detect and appropriately settle an inflated vehicle collision claim in Bengaluru."
+    difficulty: hard
+
+# Environment Constraints
+max_steps: 45
+v_cpu: 2
+memory_gb: 8
+timeout_minutes: 20
+
+# Contact / Authorship
+authors: ["ClaimsDesk India Operations"]
+license: "MIT"

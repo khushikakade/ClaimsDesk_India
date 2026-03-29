@@ -1,0 +1,8 @@
+{
+  "source_directories": [
+    ".",
+    "./claimsdesk"
+  ],
+  "site_package_search_strategy": "all"
+}
+
