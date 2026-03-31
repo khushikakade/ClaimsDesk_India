@@ -25,6 +25,7 @@ except ImportError:
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
+HF_TOKEN = os.getenv("HF_TOKEN")  # Required per OpenEnv spec
 
 SUBMISSION_TASKS = ["StraightThrough", "MissingButLegit", "InflatedCollision"]
 

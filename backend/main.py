@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+
 # Updated imports for new structure
 from app.env.env import ClaimsDeskEnv
 from app.models import Action, StepResult, IncidentType, PolicyType
@@ -33,7 +34,7 @@ _sessions: dict[str, ClaimsDeskEnv] = {}
 
 # --- API Models ---
 class ResetBody(BaseModel):
-    task_id: str
+    task_id: str = "StraightThrough"  # default task so body is not required
     seed: int = 0
     session_id: str = "default"
 
@@ -197,7 +198,9 @@ def get_claim(claim_id: str):
     return _MOCK_CLAIMS[claim_id]
 
 @app.post("/api/simulation/reset")
-def reset_simulation(body: ResetBody):
+def reset_simulation(body: Optional[ResetBody] = None):
+    if body is None:
+        body = ResetBody()
     env = ClaimsDeskEnv(task_id=body.task_id, seed=body.seed)
     obs = env.reset()
     _sessions[body.session_id] = env
@@ -205,10 +208,11 @@ def reset_simulation(body: ResetBody):
 
 # Aliases for OpenEnv Spec Compliance (Top-Level)
 @app.post("/reset")
-def spec_reset(body: ResetBody):
+def spec_reset(body: Optional[ResetBody] = None):
     return reset_simulation(body)
 
 @app.post("/step")
+@app.post("/api/simulation/step")  # UI alias — fixes 405 from frontend
 def spec_step(action: Action):
     # This assumes session_id "default" is the target for step validation
     if "default" not in _sessions:
@@ -221,11 +225,20 @@ def spec_state():
         raise HTTPException(status_code=400, detail="Call /reset first")
     return _sessions["default"].state().model_dump(mode="json")
 
-# Mount frontend
-dist_path = "../frontend/dist"
+# Mount frontend using absolute paths to avoid Docker cwd issues
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+dist_path = os.path.join(base_dir, "frontend", "dist")
+
+if not os.path.exists(dist_path):
+    print(f"Warning: React frontend dist not found at {dist_path}. Falling back to parent...")
+    dist_path = os.path.join(os.path.dirname(base_dir), "frontend", "dist")
+
 if os.path.exists(dist_path):
     app.mount("/", StaticFiles(directory=dist_path, html=True), name="static")
+else:
+    print(f"CRITICAL WARNING: No static files found to mount at {dist_path}!")
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
