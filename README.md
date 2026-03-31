@@ -1,71 +1,79 @@
----
-title: ClaimsDesk India
-emoji: 🏥
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
-tags:
-  - openenv
----
+# ClaimsDesk India: Enterprise AI Claims Intelligence
 
-# ClaimsDesk India: Professional AI Insurance Intelligence
 [![OpenEnv](https://img.shields.io/badge/OpenEnv-Benchmark-blue)](https://openenv.org)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-360/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/release/python-3.10/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-## 1. Overview
-**ClaimsDesk India** is a professional-grade, enterprise-ready AI insurance intelligence platform and OpenEnv benchmark. It evaluates AI agents on their ability to manage complex insurance operations within the **Indian market context**, covering **Health, Property, and Motor** insurance domains.
+**ClaimsDesk India** is a high-fidelity, enterprise-grade AI environment designed for the automated triage, investigation, and resolution of insurance claims in the Indian market. Built on the **OpenEnv** specification, it provides a strictly typed, reproducible benchmark for AI agents handling complex multi-domain insurance scenarios (Health, Property, Motor).
 
-The platform simulates a high-stakes claims adjuster's workspace, where agents must navigate:
-- **🇮🇳 Indian Localization**: All transactions in **INR (₹)**, localized Indian names, and regional context (Mumbai, Delhi, Bengaluru).
-- **🏥 Multi-Domain Triage**: Beyond vehicle claims—handles complex Health (Surgery) and Property (Fire/Monsoon) claim scenarios.
-- **🛡️ Enterprise Architecture**: Robust `backend/` and `frontend/` separation built for scale and portability.
-- **🔍 Fraud & Logic Intelligence**: Evaluation of dense reasoning trajectories, not just final decisions.
+---
 
-## 2. Professional Architecture
-The project has been refactored into a high-standards enterprise structure:
-- **`backend/`**: FastAPI server with modular `app/` structure (models, env, graders, rewards, scenarios).
-- **`frontend/`**: Modern React dashboard built with Vite, featuring real-time KPI monitoring and a human-in-the-loop action console.
-- **`deployment/`**: Multi-stage Docker configuration for seamless deployment to Hugging Face or private clouds.
+## 🏗️ Core Architecture: "Decision-Engine-as-a-Service"
 
-## 3. Benchmark Scenarios (India Context)
-| Task ID | Domain | Location | Difficulty | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `StraightThrough` | **Health** | Mumbai | Easy | Legitimate hospital surgery claim. Tests compliance and efficient processing in INR. |
-| `MissingButLegit` | **Property** | Delhi | Medium | Fire damage with missing official reports. Tests evidence gathering and local regulation handling. |
-| `InflatedCollision` | **Motor** | Bengaluru | Hard | High-value collision with shop-inflation signals. Tests fraud detection and rigorous negotiation. |
+Unlike traditional legacy systems, ClaimsDesk is built with an **Integration-First** philosophy. It provides a "Headless AI" core that can be embedded directly into existing insurer workflows via RESTful APIs and Webhooks.
 
-## 4. Setup & Execution
+### Key Capabilities
+- **🇮🇳 Localized Intelligence**: Native support for **INR (₹)** transactions and regional Indian regulations (Mumbai, Delhi, Bengaluru).
+- **🏥 Multi-Domain Precision**: Pre-configured scenarios for Health (Surgery), Property (Fire/Monsoon), and Motor (Collision).
+- **🛡️ Fraud-Centric Grading**: A mathematically rigorous `Trajectory-Aware Grader` that evaluates agent reasoning, not just final outcomes.
+- **⚡ Lightning-Fast Deployment**: Containerized architecture optimized for sub-15s startup on Hugging Face or private cloud environments.
 
-### Local Development
-1. **Install Python backend**:
-   ```bash
-   pip install fastapi uvicorn pydantic pydantic-settings httpx
-   ```
-2. **Setup Frontend**:
-   ```bash
-   cd frontend && npm install && npm run build && cd ..
-   ```
-3. **Run Platform (Unified)**:
-   ```bash
-   $env:PYTHONPATH="backend"; python backend/main.py
-   ```
+---
 
-### Running Benchmark
-To execute the submission-ready baseline inference script (requires OpenAI API Key):
-```bash
-$env:PYTHONPATH="backend"; python inference.py
+## 📂 Repository Structure
+
+```text
+.
+├── backend/            # FastAPI Decision Core & Environment Logic
+│   ├── app/
+│   │   ├── env/        # OpenEnv Gym Environment (ClaimsDeskEnv)
+│   │   ├── utils/      # Indian Market Localization Helpers
+│   │   └── models.py   # Pydantic Typing (Action, Observation, Reward)
+│   └── main.py         # Production API Entrypoint
+├── frontend/           # React KPIs & Human-in-the-Loop Action Console
+├── scripts/            # Automated Benchmarking & Evaluation Tools
+├── server/             # Multi-mode Deployment Wrappers
+├── openenv.yaml        # Benchmark Metadata & Task Definitions
+└── pyproject.toml      # Python Packaging & Workspace Config
 ```
 
-## 5. Grading & Evaluation
-ClaimsDesk India uses a **Trajectory-Aware Grader** (`[0.0, 1.0]`):
-- **Resolution Correctness (30%)**: Alignment with hidden fair-market INR settlement bands.
-- **Evidence Diligence (25%)**: Professional inspection of critical local documents (Vahan, Fire Service).
-- **Fraud Calibration (20%)**: Accurate identification of suspicious signals in the Indian context.
-- **Operational Efficiency (25%)**: Resolution within professional step and budget limits.
+---
+
+## 🚀 Getting Started
+
+### 1. Developer Setup
+Initialize the environment locally:
+```bash
+# Install backend dependencies
+pip install -e .
+
+# Build frontend assets
+npm run build --prefix frontend
+```
+
+### 2. Running the Environment
+Start the unified platform (API + Dashboard):
+```bash
+# Add backend to your search path
+$env:PYTHONPATH="backend" 
+python backend/main.py
+```
+
+### 3. Executing the Benchmark
+Run the baseline AI agent against the pre-configured Indian scenarios:
+```bash
+python scripts/benchmark.py
+```
 
 ---
-*Developed for the OpenEnv Enterprise Benchmark Challenge.*
+
+## 📈 Integration Strategy for Insurers
+
+ClaimsDesk is designed to be **integrated**, not just used standalone. For big insurance companies, the recommended implementation path is:
+
+1. **Passive Audit Mode**: Ingest historical claims data via the API to find leakage and fraud signals.
+2. **Shadow Triage**: Run ClaimsDesk parallel to human adjusters to build confidence intervals.
+3. **Automated STP (Straight-Through Processing)**: Connect the `/step` endpoint to your core claims system (e.g., GuideWire) for sub-5s automated approval.
+
+---
+*Developed for the OpenEnv Enterprise Benchmark Challenge. Localized for the Indian Insurance Market.*
