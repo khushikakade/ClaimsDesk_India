@@ -14,9 +14,13 @@ dependencies = [
     "pydantic>=2.0",
     "pydantic-settings",
     "httpx",
-    "openai"
+    "openai",
+    "openenv-core>=0.2.0"
 ]
+
+[project.scripts]
+server = "server.app:start_server"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["backend*"]
+include = ["backend*", "server*"]
